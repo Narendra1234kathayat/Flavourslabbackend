@@ -228,8 +228,8 @@ router.post('/forgot', async (req, res) => {
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'theflavorslab980@gmail.com',
-                pass: 'ydgx gdtl rjbv wkvm'
+                user: process.env.USER,
+                pass: process.env.PASS
             }
         });
 
