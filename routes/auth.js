@@ -24,7 +24,7 @@ const verifyUser = async (req, res, next) => {
         }
 
         const decode = await jwt.verify(token, JWT_SECRET);
-        
+
 
         next();
     } catch (error) {
@@ -161,12 +161,13 @@ router.post(
 
             // Set the cookie with the authToken
              
-
+            
             return res.status(200).json({
                 email: user.email,
                 message: "Valid user",
                 status: true,
-            }).cookie("token", authToken);
+                authToken
+            });
         } catch (error) {
             console.error(error.message);
             res.status(500).send("Internal Server Error!");
