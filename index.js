@@ -14,14 +14,14 @@ app.use(express.json()); // Using middleware(If i have to use req.body then i ha
 app.use("/Multer", express.static("Multer"));
 
 
-// app.use(
-//     cors({
-//         origin: ['http://localhost:5173', 'http://localhost:5174'], // Allow requests from these origins
-//         credentials: true, // Allow cookies to be sent with the requests
-//     })
-// );
+app.use(
+    cors({
+        origin: ['http://localhost:5173', 'http://localhost:5174'], // Allow requests from these origins
+        withCredentials: true, // Allow cookies to be sent with the requests
+    })
+);
 
-app.use(cors())
+// app.use(cors())
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/form', require('./routes/form'));
