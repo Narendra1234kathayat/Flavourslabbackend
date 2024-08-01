@@ -17,7 +17,7 @@ const verifyUser = async (req, res, next) => {
         const token = await req.cookies.token;
 
         if (!token) {
-            return res.json({
+            return res.status(500).json({
                 status: false,
                 message: "No token"
             });
