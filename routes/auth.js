@@ -24,6 +24,7 @@ const verifyUser = async (req, res, next) => {
         }
 
         const decode = await jwt.verify(token, JWT_SECRET);
+    
 
 
         next();
@@ -160,16 +161,19 @@ router.post(
             const authToken = jwt.sign({ username: user.id }, JWT_SECRET);
 
             // Set the cookie with the authToken
+            if(!authToken){
+                return res.status(400).json({error:"no auth token"});
+            }
              
             
             return res.status(200).json({
                 email: user.email,
                 message: "Valid user",
                 status: true,
-                authToken
+                
             });
         } catch (error) {
-            console.error(error.message);
+            console.error(error.message,"fdsaf");
             res.status(500).send("Internal Server Error!");
         }
     }
