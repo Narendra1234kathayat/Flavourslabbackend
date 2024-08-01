@@ -15,7 +15,7 @@ const JWT_SECRET = "welcometoflavourfusion";
 const verifyUser = async (req, res, next) => {
     try {
         const token = await req.cookies.token;
-
+            console.log(token,"dfasf")
         if (!token) {
             return res.status(500).json({
                 status: false,
@@ -203,6 +203,7 @@ router.post("/getuser", fetchuser, async (req, res) => {
 
 router.get('/verify', verifyUser, (req, res) => {
     // Token verification successful
+    
     return res.json({ status: true });
 });
 
