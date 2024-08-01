@@ -166,7 +166,7 @@ router.post(
             }
              
             
-            return res.status(200).json({
+            return res.status(200).cookie("accesstoken", authToken).json({
                 email: user.email,
                 message: "Valid user",
                 status: true,
