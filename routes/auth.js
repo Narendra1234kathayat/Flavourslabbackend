@@ -192,7 +192,7 @@ router.post("/getuser", fetchuser, async (req, res) => {
             return res.status(404).send("User not found");
         }
 
-        res.status(200).send(user);
+       return res.status(200).json({user});
     } catch (error) {
         console.error(error.message);
        return  res.status(500).send("Internal Server Error!");
