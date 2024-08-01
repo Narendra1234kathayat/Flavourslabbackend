@@ -170,6 +170,7 @@ router.post(
                 email: user.email,
                 message: "Valid user",
                 status: true,
+                authToken
                 
             });
         } catch (error) {
