@@ -24,6 +24,7 @@ const verifyUser = async (req, res, next) => {
         }
 
         const decode = await jwt.verify(token, JWT_SECRET);
+        
 
         next();
     } catch (error) {
@@ -189,7 +190,7 @@ router.post("/getuser", fetchuser, async (req, res) => {
         res.status(200).send(user);
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error!");
+       return  res.status(500).send("Internal Server Error!");
     }
 });
 
