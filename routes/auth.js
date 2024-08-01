@@ -159,13 +159,13 @@ router.post(
             const authToken = jwt.sign({ username: user.id }, JWT_SECRET);
 
             // Set the cookie with the authToken
-            res.cookie("token", authToken);
+             
 
-            return res.json({
+            return res.status(200).json({
                 email: user.email,
                 message: "Valid user",
                 status: true,
-            });
+            }).cookie("token", authToken);
         } catch (error) {
             console.error(error.message);
             res.status(500).send("Internal Server Error!");
