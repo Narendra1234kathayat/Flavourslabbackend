@@ -159,10 +159,7 @@ router.post(
             const authToken = jwt.sign({ username: user.id }, JWT_SECRET);
 
             // Set the cookie with the authToken
-            res.cookie("token", authToken, {
-                httpOnly: true,
-                // Add other cookie options if needed
-            });
+            res.cookie("token", authToken);
 
             return res.json({
                 email: user.email,
