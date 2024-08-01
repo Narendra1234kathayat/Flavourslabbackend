@@ -1,5 +1,5 @@
 const express = require("express");
-
+require('dotenv').config()
 const port = 4000;
 const cors = require("cors");
 const connectDb = require("./db");
@@ -8,9 +8,11 @@ const app = express();
 
 connectDb();
 
+
 app.use(cookieParser());
 app.use(express.json()); // Using middleware(If i have to use req.body then i have to write this middleware)
 app.use("/Multer", express.static("Multer"));
+
 
 app.use(
     cors({
