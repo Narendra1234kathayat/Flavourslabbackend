@@ -14,7 +14,7 @@ const JWT_SECRET = "welcometoflavourfusion";
 
 const verifyUser = async (req, res, next) => {
     try {
-        const token = await req.cookies.token;
+        const token = await req.cookies?.token || req.header("Authorization")?.replace("Bearer ","");;
             console.log(token,"dfasf")
         if (!token) {
             return res.status(500).json({
