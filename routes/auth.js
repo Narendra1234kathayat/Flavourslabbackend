@@ -11,32 +11,32 @@ const JWT_SECRET = "welcometoflavourfusion";
 
 
 // verfify user
-
 const verifyUser = async (req, res, next) => {
     try {
-        const token = await req.cookies?.token || req.header("Authorization")?.replace("Bearer ","");;
-            console.log(token,"dfasf")
+        const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
+        console.log(token, "dfasf");
+
         if (!token) {
-            return res.status(500).json({
+            return res.status(401).json({
                 status: false,
                 message: "No token"
             });
         }
 
-        const decode = await jwt.verify(token, JWT_SECRET);
-    console.log("decode",decode)
-        req.user=decode._id
+        const decoded = jwt.verify(token, JWT_SECRET);
+        console.log("decoded", decoded);
+        req.user = decoded._id;
 
         next();
     } catch (error) {
         // Specific error response when token verification fails
-
         return res.status(401).json({
             status: false,
             message: "Unauthorized: Invalid token"
         });
     }
 };
+
 
 
 // Route 1: Create a new user using 'POST' method and its endpoint -> api/auth/signup
