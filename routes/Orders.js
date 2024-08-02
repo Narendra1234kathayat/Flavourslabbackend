@@ -38,12 +38,12 @@ const verifyUser = require("../middlewares/VerifyUser");
 
 router.use('/order', verifyUser, async (req, res) => {
     const { orderproducts, totalprice, tableNumber } = req.body;
-    console.log(orderproducts, '', totalprice)
+    // console.log(orderproducts, '', totalprice)
 
     try {
         // Create a new order document
         const users = await User.findOne({ _id: req.user.id });
-        console.log(users._id, "user_id")
+        // console.log(users._id, "user_id")
         const newOrder = await Order.create({
             orderproducts: orderproducts,
             userOrdered: users._id,

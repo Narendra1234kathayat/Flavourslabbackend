@@ -167,7 +167,7 @@ router.post("/getuser", verifyUser, async (req, res) => {
 
     try {
         let userId = req.user.id; // Use req.user instead of req.username
-        console.log(userId)
+        // console.log(userId)
         const user = await User.findById(userId).select("-password"); // select all fields except password.
 
         if (!user) {

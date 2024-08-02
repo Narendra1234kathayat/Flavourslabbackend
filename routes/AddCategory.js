@@ -23,7 +23,7 @@ const upload = multer({ storage: storage });
 
 router.get("/fetchcategory", async (req, res) => {
   try {
-    console.log(req.user);
+    // console.log(req.user);
 
     const catergories = await category.find({});
     res.json(catergories);

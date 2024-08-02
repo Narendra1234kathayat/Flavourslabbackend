@@ -12,7 +12,7 @@ const fetchuser = require("../middlewares/fetchuser");
 const verifyUser = async (req, res, next) => {
     try {
         const token = await req.cookies.admintoken;
-        console.log(token);
+        // console.log(token);
 
         if (!token) {
             return res.json({

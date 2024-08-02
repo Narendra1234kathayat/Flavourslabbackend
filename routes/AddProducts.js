@@ -44,7 +44,7 @@ router.post("/fetchproducts/:type", async (req, res) => {
                 { $sort: { totalQuantity: -1 } }, // Sort by total quantity in descending order
                 { $limit: 5 }, // Limit to top 5 products
             ]);
-            // console.log(topProducts ,"dfas");
+            
             
             // Extract product names from the aggregation result
             const productNames = topProducts.map((product) => product._id);
