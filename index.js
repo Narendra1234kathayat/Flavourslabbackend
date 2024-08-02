@@ -14,7 +14,7 @@ app.use("/Multer", express.static("Multer"));
 
 app.use(
     cors({
-        origin: ['http://localhost:5173', 'http://localhost:5174'], // Allow requests from these origins
+        origin: ['https://ffusions.netlify.app', 'http://localhost:5174'], // Allow requests from these origins
         credentials: true, // Allow cookies to be sent with the requests
     })
 );
