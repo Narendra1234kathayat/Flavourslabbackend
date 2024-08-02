@@ -4,36 +4,37 @@ const Order = require('../models/Order')
 const User = require('../models/User')
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "welcometoflavourfusion";
+const verifyUser = require("../middlewares/VerifyUser");
 
 
-const verifyUser = async (req, res, next) => {
-    try {
-        const token = await req.cookies.token;
-        console.log(token, "token");
+// const verifyUser = async (req, res, next) => {
+//     try {
+//         const token = await req.cookies.token;
+//         console.log(token, "token");
 
-        if (!token) {
-            return res.json({
-                status: false,
-                message: "No token",
-            });
-        }
+//         if (!token) {
+//             return res.json({
+//                 status: false,
+//                 message: "No token",
+//             });
+//         }
 
-        const decode = await jwt.verify(token, JWT_SECRET);
-        console.log(decode, "ddd")
-        req.data = decode.username;
-        console.log("req data", req.data)
+//         const decode = await jwt.verify(token, JWT_SECRET);
+//         console.log(decode, "ddd")
+//         req.data = decode.username;
+//         console.log("req data", req.data)
 
 
-        next();
-    } catch (error) {
-        // Specific error response when token verification fails
+//         next();
+//     } catch (error) {
+//         // Specific error response when token verification fails
 
-        return res.status(401).json({
-            status: false,
-            message: "Unauthorized: Invalid token",
-        });
-    }
-};
+//         return res.status(401).json({
+//             status: false,
+//             message: "Unauthorized: Invalid token",
+//         });
+//     }
+// };
 
 router.use('/order', verifyUser, async (req, res) => {
     const { orderproducts, totalprice, tableNumber } = req.body;
@@ -41,7 +42,7 @@ router.use('/order', verifyUser, async (req, res) => {
 
     try {
         // Create a new order document
-        const users = await User.findOne({ _id: req.data });
+        const users = await User.findOne({ _id: req.user.id });
         console.log(users._id, "user_id")
         const newOrder = await Order.create({
             orderproducts: orderproducts,
@@ -63,7 +64,7 @@ router.use('/order', verifyUser, async (req, res) => {
 
 router.get('/fetchorder', verifyUser, async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.data });
+        const user = await User.findOne({ _id: req.user.id});
         if (!user) {
             return res.status(400).json({ error: "No user found" });
         }
@@ -82,6 +83,7 @@ router.get('/fetchorder', verifyUser, async (req, res) => {
         return res.status(400).json({ error: error.message });
     }
 });
+
 router.get('/fetchallorders', async (req, res) => {
     try {
         const orders = await Order.find({})

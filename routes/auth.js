@@ -162,11 +162,11 @@ router.post(
 
 // Route 3: Get loggedin User details using 'POST' method and its endpoint -> api/auth/getuser
 
-router.post("/getuser", fetchuser, async (req, res) => {
+router.post("/getuser", verifyUser, async (req, res) => {
     // First middleware - fetchUser will run & then this func will run
 
     try {
-        let userId = req.user; // Use req.user instead of req.username
+        let userId = req.user.id; // Use req.user instead of req.username
         const user = await User.findById(userId).select("-password"); // select all fields except password.
 
         if (!user) {
