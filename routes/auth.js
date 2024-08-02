@@ -8,34 +8,13 @@ const nodemailer = require("nodemailer");
 // JWT contains - Header, payload(Data), & Signature
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "welcometoflavourfusion";
+const verifyUser = require("../middlewares/VerifyUser");
 
 
 // verfify user
-const verifyUser = async (req, res, next) => {
-    try {
-        const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
-        console.log(token, "dfasf");
 
-        if (!token) {
-            return res.status(401).json({
-                status: false,
-                message: "No token"
-            });
-        }
 
-        const decoded = jwt.verify(token, JWT_SECRET);
-        console.log("decoded", decoded);
-        req.user = decoded._id;
 
-        next();
-    } catch (error) {
-        // Specific error response when token verification fails
-        return res.status(401).json({
-            status: false,
-            message: "Unauthorized: Invalid token"
-        });
-    }
-};
 
 
 
@@ -86,6 +65,7 @@ router.post(
             return res.status(201).json({
                 status: true,
                 message: "Record registered",
+                authToken: authToken,
             });
         } catch (error) {
             console.error(error.message);
@@ -158,7 +138,7 @@ router.post(
                 },
             };
 
-            const authToken = jwt.sign({ username: user.id }, JWT_SECRET);
+            const authToken = jwt.sign(data, JWT_SECRET);
 
             // Set the cookie with the authToken
             if(!authToken){
@@ -166,7 +146,7 @@ router.post(
             }
              
             
-            return res.status(200).cookie("accesstoken", authToken).json({
+            return res.status(200).cookie("authToken", authToken).json({
                 email: user.email,
                 message: "Valid user",
                 status: true,
@@ -201,7 +181,7 @@ router.post("/getuser", fetchuser, async (req, res) => {
 });
 
 
-router.get('/verify', verifyUser, (req, res) => {
+router.get('/verify',verifyUser,  (req, res) => {
     // Token verification successful
     
     return res.json({ status: true });
@@ -209,7 +189,7 @@ router.get('/verify', verifyUser, (req, res) => {
 
 // Route 4: Logout user and its endpoint -> api/auth/logout
 
-router.get('/logout', verifyUser, async (req, res) => {
+router.get('/logout', verifyUser,async (req, res) => {
     res.clearCookie('token');
     return res.json({ status: true });
 })

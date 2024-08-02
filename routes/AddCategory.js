@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const category = require("../models/Category");
+const verifyUser = require("../middlewares/VerifyUser");
 
 const { body, validationResult } = require("express-validator");
 const multer = require("multer");
@@ -22,6 +23,8 @@ const upload = multer({ storage: storage });
 
 router.get("/fetchcategory", async (req, res) => {
   try {
+    console.log(req.user);
+
     const catergories = await category.find({});
     res.json(catergories);
   } catch (error) {
@@ -105,27 +108,32 @@ router.post(
   }
 );
 router.post("/delete", async (req, res) => {
-    try {
-      const { name } = req.body;
-      if (!name) {
-        return res.status(400).json({ message: "No category found" });
-      }
-  
-      // Delete the category
-      const deletedCategory = await category.findOneAndDelete({ name });
-  
-      if (!deletedCategory) {
-        return res.status(400).json({ message: "Category not found or already deleted" });
-      }
-  
-      // Delete products associated with this category
-      const deletedProducts = await Product.deleteMany({ productcategory: name });
-  
-      return res.json({ success: true });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Internal Server Error" });
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "No category found" });
     }
-  });
+
+    // Delete the category
+    const deletedCategory = await category.findOneAndDelete({ name });
+
+    if (!deletedCategory) {
+      return res
+        .status(400)
+        .json({ message: "Category not found or already deleted" });
+    }
+
+    // Delete products associated with this category
+    const deletedProducts = await Product.deleteMany({ productcategory: name });
+
+    if (!deletedProducts) {
+      return res.status(500).json({ message: "Not Deleted" });
+    }
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 module.exports = router;
